@@ -39,6 +39,7 @@ router.post("/reserve/:id",authenticate,async (req, res) => {
         if(user.isAdmin){
             if(checkStatus.status === 'booked'){
                 console.log("inside .isAdmin");
+                // bookSeat.up
                 // const verifyStatus = await bookSeat.findOne({seat_id: req.body.data})
                 updateStatus = await bookSeat.updateOne(
                     {
@@ -50,9 +51,9 @@ router.post("/reserve/:id",authenticate,async (req, res) => {
                         }
                     }
                 )
-                const allseat = await bookSeat.find().sort({seat_id: 1});
+                const allseat = await bookSeat.findOne({seat_id: req.body.data});
         // res.status(200).send(allseat);
-                res.status(200).json({msg: "Seat released", data: allseat})
+                res.status(200).json({msg: "Seat released", status: allseat.status})
 
             }else{
                 throw new Error("Seat is already available")
@@ -71,8 +72,8 @@ router.post("/reserve/:id",authenticate,async (req, res) => {
                     }
                 }
             )
-            const allseat = await bookSeat.find().sort({seat_id: 1});
-            res.status(200).json({msg: "Booking Confirmed", data: allseat})
+            const allseat = await bookSeat.findOne({seat_id: req.body.data});
+            res.status(200).json({msg: "Booking Confirmed", status: allseat.status})
 
         }
     
