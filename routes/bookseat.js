@@ -50,7 +50,9 @@ router.post("/reserve/:id",authenticate,async (req, res) => {
                         }
                     }
                 )
-                res.status(200).json("Seat released")
+                const allseat = await bookSeat.find().sort({seat_id: 1});
+        // res.status(200).send(allseat);
+                res.status(200).json({msg: "Seat released", data: allseat})
 
             }else{
                 throw new Error("Seat is already available")
@@ -69,7 +71,8 @@ router.post("/reserve/:id",authenticate,async (req, res) => {
                     }
                 }
             )
-            res.status(200).json("Booking Confirmed")
+            const allseat = await bookSeat.find().sort({seat_id: 1});
+            res.status(200).json({msg: "Booking Confirmed", data: allseat})
 
         }
     
